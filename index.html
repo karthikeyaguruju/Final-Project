@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact-us</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to left top, #5723c7, #16ed97);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.contact-form:hover {
+    transform: scale(1.05);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.form-group:hover {
+    transform: scale(1.05);
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 17px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+button {
+    display: block;
+    margin: auto;
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 17px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+</style>
+<body>
+  <div class="contact-form">
+    <h1>Contact Form</h1>
+    <form onsubmit="sendMessage(); return false;"> <!-- Added onsubmit attribute to call sendMessage and return false to prevent default form submission -->
+      <div class="form-group">
+        <label for="">Your Name</label>
+        <input type="text" id="name" placeholder="Your Name">      
+      </div>
+      <div class="form-group">
+        <label for="">Your Email</label>
+        <input type="text" id="email" placeholder="Your Email">
+      </div>
+      <div class="form-group">
+        <label for="">Subject</label>
+        <input type="text" id="subject" placeholder="Enter Subject....">
+      </div>
+      <div class="form-group">
+        <label for="">Message</label>
+        <textarea id="message" placeholder="Message.."></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit">Send Message</button> <!-- Added type="submit" to trigger the form submission -->
+      </div>
+    </form>
+  </div>
+  <script>
+    function sendMessage() {
+      event.preventDefault(); // Prevent the default form submission behavior
+  
+      (function () {
+          emailjs.init("64DSsWc6XiC7IF-of"); // Account Public key
+      })();
+  
+      var serviceID = "service_x71mw2v";
+      var templateID = "template_1aexbgk";
+  
+      var nameField = document.querySelector('#name');
+      var emailField = document.querySelector('#email');
+      var subjectField = document.querySelector('#subject');
+      var messageField = document.querySelector('#message');
+  
+      var params = {
+          sendername: nameField.value,
+          senderemail: emailField.value,
+          subject: subjectField.value,
+          message: messageField.value
+      };
+  
+      if (!nameField.value || !emailField.value || !subjectField.value || !messageField.value) {
+          alert('Please fill in all fields');
+          return;
+      }
+  
+      emailjs.send(serviceID, templateID, params)
+          .then(res => {
+              alert('Thank You, ' + params['sendername'] + '! Your Message has been Sent.');
+  
+              // Clear form fields after successful submission
+              nameField.value = '';
+              emailField.value = '';
+              subjectField.value = '';
+              messageField.value = '';
+          })
+          .catch(error => {
+              console.error('Error sending email:', error);
+              alert('Sorry, something went wrong. Please try again later.');
+          });
+  }
+  
+  const disabledKeys = ["c", "C", "x", "J", "u", "I"]; // keys that will be disabled
+  const showAlert = e => {
+    e.preventDefault(); // preventing its default behaviour
+    return alert("Sorry, you can't view or copy source codes this way!");
+  }
+  document.addEventListener("contextmenu", e => {
+    showAlert(e); // calling showAlert() function on mouse right click
+  });
+  document.addEventListener("keydown", e => {
+    // calling showAlert() function, if the pressed key matched to disabled keys
+    if((e.ctrlKey && disabledKeys.includes(e.key)) || e.key === "F12") {
+      showAlert(e);
+    }
+  });
+  </script>
+</body>
+</html>
